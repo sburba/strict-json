@@ -21,7 +21,7 @@
     <body>
         <header>
             <h1>
-                <a href="https://sburba.github.io/strict-json/world/">StrictJson</a>
+                <a href="https://sburba.github.io/strict-json/">StrictJson</a>
             </h1>
             <nav class="breadcrumbs">
                 
@@ -295,10 +295,21 @@ echo $user-&gt;getEventsAttended()[0]-&gt;getName();
 that does the validation, or you can just validate in the constructor of your model class. Exceptions thrown in your
 model constructor will be re-thrown by StrictJson when it attempts to map. Validation in your constructor has the
 additional benefit of validating your models even when you're not using StrictJson.</p>
-<h1 id="errors">Errors</h1>
+<h1 id="exceptions">Exceptions</h1>
+<h2 id="jsonformatexception">JsonFormatException</h2>
 <p>If the JSON is invalid, is missing required fields specified by your model constructor, or has fields which don't match
 the types of your model constructor, StrictJson will throw a <code>JsonFormatException</code>, to indicate that the JSON was not
-formatted as you expected.</p>
+formatted as you expected. <code>JsonFormatException</code> messages will also include a full path to the place in the JSON that
+is causing the error, which looks like this (if expecting an <code>int</code> array in position <code>$.a.b</code>):</p>
+<p>JSON:</p>
+<pre><code class="language-json">{
+  "a": {
+    "b": [1, "two", 3]
+  }
+}</code></pre>
+<p>Error:</p>
+<pre><code>Value is of type string, expected type int at path $.a.b[1]</code></pre>
+<h2 id="invalidconfigurationexception">InvalidConfigurationException</h2>
 <p>If StrictJson is configured incorrectly, either by mapping to a class that doesn't have a constructor, or providing
 adapters that don't have fromJson methods, it will throw <code>InvalidConfigurationException</code>. StrictJson does not validate
 adapters until it actually uses them for performance reasons, so InvalidConfigurationException may be thrown later than
@@ -306,6 +317,10 @@ you expect.</p>
 <!-- CONTENT END -->
 
             </article>
+            <aside class="sidebar">
+                <hr>
+                <div class="bulletlink"><a href="https://github.com/sburba/strict-json">GitHub Repo</a></div>
+            </aside>
         </main>
 
         <script src="https://sburba.github.io/strict-json/assets/toc.js"></script>
