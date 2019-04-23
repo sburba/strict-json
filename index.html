@@ -342,6 +342,12 @@ performance reasons, so InvalidConfigurationException may be thrown later than y
 <li>When specifying basic types using the array <code>$array_item_type</code> parameter in
 <code>StrictJsonBuilder::addParameterArrayAdapter</code>, you must use the new <code>Burba\StrictJson\Type</code> class</li>
 </ul>
+<h1 id="migrating-from-v2">Migrating from V2</h1>
+<ul>
+<li>If you were using the parameter_adapters parameter in the StrictJson constructor, you'll have to migrate to using
+<code>StrictJson::builder()</code></li>
+<li>JsonContext has been renamed to JsonPath</li>
+</ul>
 <!-- CONTENT END -->
 
             </article>
