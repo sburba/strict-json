@@ -73,6 +73,12 @@ StrictJson then examines the constructor of your model class and collects parame
 Then it validates the JSON to ensure that it has a property with a matching name and type for each required constructor
 parameter. Finally, it instantiates your model classes (with their own constructor) and returns them to you.
 
+# Install
+
+```bash
+composer require sburba/strict-json
+```
+
 # Optional Fields
 If your constructor parameter has a default value, StrictJson will use that value if the field does not exist in the
 JSON.

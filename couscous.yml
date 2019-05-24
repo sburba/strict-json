@@ -8,5 +8,7 @@ title: StrictJson
 baseUrl: https://sburba.github.io/strict-json
 defaultLanguage: world
 sidebar:
-  - text: GitHub Repo
+  - text: GitHub
     link: https://github.com/sburba/strict-json
+  - text: Packagist
+    link: https://packagist.org/packages/sburba/strict-json
