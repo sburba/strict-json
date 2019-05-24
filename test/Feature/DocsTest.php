@@ -164,7 +164,7 @@ class DocsTest extends TestCase
 
         $mapper = StrictJson::builder()
             ->addClassAdapter(DateTime::class, new DateAdapter())
-            ->addParameterArrayAdapter(User::class, 'events_attended', Type::ofClass(Event::class))
+            ->addParameterArrayAdapter(User::class, 'events_attended', Event::class)
             ->build();
 
         /** @var User $user */
