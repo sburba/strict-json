@@ -322,7 +322,7 @@ $json = '
 $mapper = StrictJson::builder()
     -&gt;addClassAdapter(DateTime::class, new DateAdapter())
     // Tell the mapper the events_attended parameter in the User class is an array of Events
-    -&gt;addParameterArrayAdapter(User::class, 'events_attended', Type::ofClass(Event::class))
+    -&gt;addParameterArrayAdapter(User::class, 'events_attended', Event::class)
     -&gt;build();
 
 $user = $mapper-&gt;map($json, User::class);
