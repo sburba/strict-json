@@ -91,6 +91,8 @@ class User
 <p>StrictJson then examines the constructor of your model class and collects parameter names and types.
 Then it validates the JSON to ensure that it has a property with a matching name and type for each required constructor
 parameter. Finally, it instantiates your model classes (with their own constructor) and returns them to you.</p>
+<h1 id="install">Install</h1>
+<pre><code class="language-bash">composer require sburba/strict-json</code></pre>
 <h1 id="optional-fields">Optional Fields</h1>
 <p>If your constructor parameter has a default value, StrictJson will use that value if the field does not exist in the
 JSON.</p>
@@ -372,7 +374,8 @@ performance reasons, so InvalidConfigurationException may be thrown later than y
             </article>
             <aside class="sidebar">
                 <hr>
-                <div class="bulletlink"><a href="https://github.com/sburba/strict-json">GitHub Repo</a></div>
+                <div class="bulletlink"><a href="https://github.com/sburba/strict-json">GitHub</a></div>
+                <div class="bulletlink"><a href="https://packagist.org/packages/sburba/strict-json">Packagist</a></div>
             </aside>
         </main>
 
