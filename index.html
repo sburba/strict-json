@@ -71,7 +71,7 @@ use Burba\StrictJson\StrictJson;
 use Burba\StrictJson\Fixtures\Docs\User;
 
 $mapper = new StrictJson();
-$mapper-&gt;map($json, User::class);</code></pre>
+$user = $mapper-&gt;map($json, User::class);</code></pre>
 <h1 id="how-does-it-work">How does it work?</h1>
 <p>StrictJson works with plain old php classes, they need to have a constructor with parameter names and types that match
 your expected JSON, like this:</p>
