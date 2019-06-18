@@ -45,7 +45,7 @@ use Burba\StrictJson\StrictJson;
 use Burba\StrictJson\Fixtures\Docs\User;
 
 $mapper = new StrictJson();
-$mapper->map($json, User::class);
+$user = $mapper->map($json, User::class);
 ```
 
 # How does it work?
