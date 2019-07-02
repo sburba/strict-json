@@ -2,6 +2,7 @@ FROM php:7.2-cli
 
 RUN apt-get update && apt-get install git zip unzip -y
 RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 WORKDIR /app
 
