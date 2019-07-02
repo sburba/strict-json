@@ -17,6 +17,17 @@
         "Burba\\StrictJson\\InvalidConfigurationException::__construct",
         "Burba\\StrictJson\\JsonFormatException::__construct"
       ]
+    },
+    "Coalesce": {
+      "ignore": [
+        "Burba\\StrictJson\\Internal\\ConstructorParameterFetcher::getParameters::34"
+      ]
+    },
+    "Throw_": {
+      "ignore": [
+        "Burba\\StrictJson\\Internal\\ConstructorParameterFetcher::findParameters::55",
+        "Burba\\StrictJson\\StrictJson::mapDecoded::113"
+      ]
     }
   }
 }
