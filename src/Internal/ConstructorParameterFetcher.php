@@ -31,10 +31,7 @@ class ConstructorParameterFetcher
      */
     public function getParameters(string $classname, JsonPath $path): array
     {
-        $params = $this->constructor_params_by_class[$classname];
-        if ($params === null) {
-            $params = $this->findParameters($classname, $path);
-        }
+        $params = $this->constructor_params_by_class[$classname] ?? $this->findParameters($classname, $path);
         $this->constructor_params_by_class[$classname] = $params;
 
         return $params;
