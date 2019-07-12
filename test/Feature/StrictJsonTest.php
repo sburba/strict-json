@@ -6,6 +6,7 @@ use Burba\StrictJson\Fixtures\Adapters\AdapterThatSupportsNoTypes;
 use Burba\StrictJson\Fixtures\Adapters\AdapterThatThrowsJsonFormatException;
 use Burba\StrictJson\Fixtures\Adapters\AdapterThatThrowsRuntimeException;
 use Burba\StrictJson\Fixtures\Adapters\DefaultIfNullAdapter;
+use Burba\StrictJson\Fixtures\Adapters\IntAdapterThatAddsFour;
 use Burba\StrictJson\Fixtures\Adapters\IntPropClassAdapterThatAddsFour;
 use Burba\StrictJson\Fixtures\BasicClass;
 use Burba\StrictJson\Fixtures\Docs\LenientBooleanAdapter;
@@ -472,6 +473,22 @@ class StrictJsonTest extends TestCase
         $this->assertEquals(
             new HasClassProp(new HasIntProp(5)),
             $mapper->map($json, HasClassProp::class)
+        );
+    }
+
+    /**
+     * @throws JsonFormatException
+     */
+    public function testTypeAdapter(): void
+    {
+        $json = '{"int_prop": 1}';
+        $mapper = StrictJson::builder()
+            ->addTypeAdapter(Type::int(), new IntAdapterThatAddsFour())
+            ->build();
+
+        $this->assertEquals(
+            new HasIntProp(5),
+            $mapper->map($json, HasIntProp::class)
         );
     }
 }

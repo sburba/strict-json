@@ -280,6 +280,40 @@ echo $event->isSuitRequired() ? 'Suit up' : 'Wear something casual';
 // Prints "Suit up"
 ```
 
+## Type Adapters
+
+If you want to change the way all values of a specific type are mapped, you can do that by adding a type adapter.
+For example, if we wanted to apply the LenientBooleanAdapter we defined above to all boolean parameters in all classes,
+we could instead instantiate our StrictJson instance like this:
+```php
+<?php
+use Burba\StrictJson\StrictJson;
+use DateTime;
+use Burba\StrictJson\Fixtures\Docs\DateAdapter;
+use Burba\StrictJson\Fixtures\Docs\LenientBooleanAdapter;
+use Burba\StrictJson\Type;
+use Burba\StrictJson\Fixtures\Docs\Event;
+
+$mapper = StrictJson::builder()
+    ->addClassAdapter(DateTime::class, new DateAdapter())
+    // Register it as a type adapter for all parameters
+    ->addTypeAdapter(Type::bool(), new LenientBooleanAdapter())
+    ->build();
+    
+// And use it the same way as above
+$json = '
+{
+    "name": "Dinner party for Bob",
+    "date": "2013-02-13T08:35:34Z",
+    "is_suit_required": 1
+}
+';
+
+$event = $mapper->map($json, Event::class);
+echo $event->isSuitRequired() ? 'Suit up' : 'Wear something casual';
+```
+
+
 ## Array Parameter Adapters
 
 If your class contains arrays, you'll need to tell StrictJson the expected array item type, so that it can instantiate
@@ -291,7 +325,6 @@ use Burba\StrictJson\Fixtures\Docs\Address;
 use Burba\StrictJson\Fixtures\Docs\Event;
 use Burba\StrictJson\StrictJson;
 use Burba\StrictJson\Fixtures\Docs\DateAdapter;
-use Burba\StrictJson\Type;
 
 
 // User class with array of events

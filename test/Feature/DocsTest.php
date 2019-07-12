@@ -143,6 +143,29 @@ class DocsTest extends TestCase
     /**
      * @throws JsonFormatException
      */
+    public function testTypeAdapterExample(): void
+    {
+        $mapper = StrictJson::builder()
+            ->addClassAdapter(DateTime::class, new DateAdapter())
+            ->addTypeAdapter(Type::bool(), new LenientBooleanAdapter())
+            ->build();
+
+        $json = '
+        {
+            "name": "Dinner party for Bob",
+            "date": "2013-02-13T08:35:34Z",
+            "is_suit_required": 1
+        }
+        ';
+
+        /** @var Event $event */
+        $event = $mapper->map($json, Event::class);
+        $this->assertTrue($event->isSuitRequired());
+    }
+
+    /**
+     * @throws JsonFormatException
+     */
     public function testArrayAdapterExample(): void
     {
         $json = '

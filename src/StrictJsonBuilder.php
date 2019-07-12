@@ -10,7 +10,7 @@ class StrictJsonBuilder
     /** @var array */
     private $parameter_adapters = [];
     /** @var array */
-    private $class_adapters = [];
+    private $type_adapters = [];
 
     public function addParameterAdapter(string $class_name, string $parameter_name, Adapter $adapter): self
     {
@@ -32,14 +32,20 @@ class StrictJsonBuilder
 
     public function addClassAdapter(string $class_name, Adapter $adapter): self
     {
-        $this->class_adapters[$class_name] = $adapter;
+        $this->type_adapters[$class_name] = $adapter;
+        return $this;
+    }
+
+    public function addTypeAdapter(Type $type, Adapter $adapter): self
+    {
+        $this->type_adapters[$type->typename] = $adapter;
         return $this;
     }
 
     public function build(): StrictJson
     {
         return new StrictJson(
-            $this->class_adapters,
+            $this->type_adapters,
             new ConstructorParameterFetcher($this->parameter_adapters)
         );
     }
