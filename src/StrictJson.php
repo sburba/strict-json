@@ -148,7 +148,7 @@ class StrictJson
                 $expectation = $adapter->fromTypes()[0]->__toString();
             } else {
                 throw new InvalidConfigurationException(
-                    "Adapter $adapter_class does not support any types! (fromTypes must return an non-empty array)",
+                    "Adapter $adapter_class does not support any types! (fromTypes must return a non-empty array)",
                     $path
                 );
             }
