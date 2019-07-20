@@ -158,9 +158,12 @@ class StrictJson
 
         try {
             return $adapter->fromJson($value, $this, $path);
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (JsonFormatException $e) {
-            throw $e;
         } catch (Exception $e) {
+            // If it's already a JsonFormatException, we can just rethrow it
+            if ($e instanceof JsonFormatException) {
+                throw $e;
+            }
+            // Otherwise wrap it with extra information about where in the json parsing it failed
             $adapter_class = get_class($adapter);
             throw new InvalidConfigurationException("Adapter {$adapter_class} threw an exception", $path, $e);
         }
