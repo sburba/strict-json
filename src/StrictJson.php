@@ -76,7 +76,7 @@ class StrictJson
     public function mapToArrayOf(string $json, $type)
     {
         $type = $type instanceof Type ? $type : Type::ofClass($type);
-        return $this->mapWithAdapter($this->safeDecode($json), new ArrayAdapter($type), JsonPath::root());
+        return $this->mapDecodedToArrayOf($this->safeDecode($json), $type, JsonPath::root());
     }
 
     /**
@@ -84,7 +84,7 @@ class StrictJson
      *
      * @param mixed $decoded_json An associative array or other primitive
      * @param Type $target_type Either a class name or a scalar name (i.e. string, int, float, bool)
-     * @param JsonPath $path The current JSON parsing path, or null if being called at the root of the decoded JSON
+     * @param JsonPath $path The current JSON parsing path
      *
      * @return mixed
      * @throws JsonFormatException
@@ -112,6 +112,21 @@ class StrictJson
         //@codeCoverageIgnoreStart
         throw new InvalidConfigurationException("Target type \"$target_type\" is not a scalar type or valid class and has no registered type adapter", $path);
         //@codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Convert decoded json array into a PHP array of items of the specified type
+     *
+     * @param mixed $decoded_json An associative array or other primitive
+     * @param Type $type The expected type of all items in the array
+     * @param JsonPath $path The current JSON parsing path
+     *
+     * @return mixed
+     * @throws JsonFormatException
+     */
+    public function mapDecodedToArrayOf($decoded_json, Type $type, JsonPath $path)
+    {
+        return $this->mapWithAdapter($decoded_json, new ArrayAdapter($type), $path);
     }
 
     /**

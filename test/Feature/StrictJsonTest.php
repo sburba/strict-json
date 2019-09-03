@@ -491,4 +491,18 @@ class StrictJsonTest extends TestCase
             $mapper->map($json, HasIntProp::class)
         );
     }
+
+    /**
+     * @throws JsonFormatException
+     */
+    public function testMapDecodedToArray(): void
+    {
+        $decoded = [1,2,3,4];
+        $mapper = new StrictJson();
+
+        $this->assertEquals(
+            [1,2,3,4],
+            $mapper->mapDecodedToArrayOf($decoded, Type::int(), JsonPath::root())
+        );
+    }
 }
