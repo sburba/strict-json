@@ -505,4 +505,15 @@ class StrictJsonTest extends TestCase
             $mapper->mapDecodedToArrayOf($decoded, Type::int(), JsonPath::root())
         );
     }
+
+    /**
+     * @throws JsonFormatException
+     */
+    public function testMapObjectToArray(): void
+    {
+        $mapper = new StrictJson();
+        $this->expectException(JsonFormatException::class);
+        $this->expectExceptionMessage('Expected array, found object');
+        $mapper->mapToArrayOf('{"one": 1, "two": 2}', Type::int());
+    }
 }

@@ -33,6 +33,9 @@ class ArrayAdapter implements Adapter
     {
         $mapped_items = [];
         foreach ($items as $idx => $item) {
+            if (!is_int($idx)) {
+                throw new JsonFormatException('Expected array, found object', $path);
+            }
             $mapped_items[] = $delegate->mapDecoded($item, $this->type, $path->withArrayIndex($idx));
         }
         return $mapped_items;
