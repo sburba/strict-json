@@ -141,6 +141,23 @@ $model = $mapper-&gt;map($json, ModelWithNullableParam::class);
 $message = is_null($model-&gt;getNullableParam()) ? 'Param is null' : 'Param is not null';
 echo $message;
 // Prints 'Param is null'</code></pre>
+<h1 id="fields-with-invalid-php-parameter-names">Fields with invalid PHP parameter names</h1>
+<p>If your JSON contains fields that aren't valid PHP parameter names, you can register a parameter alias to map
+it into a valid php parameter name</p>
+<p>Here's a minimal example, using the Address class defined above, but with the <code>zip_code</code> param represented as
+<code>$zip_code$</code> in the JSON:</p>
+<pre><code class="language-php">&lt;?php declare(strict_types=1);
+use Burba\StrictJson\StrictJson;
+use Burba\StrictJson\Fixtures\Docs\Address;
+
+$json = '{"address": "1234 Easy St", "$zip_code$" =&gt; "12345"}';
+$mapper = StrictJson::builder()
+    -&gt;addParameterAlias(Address::class, 'zip_code', '$zip_code$')
+    -&gt;build();
+
+$address = $mapper-&gt;map($json, Address::class);
+echo $address-&gt;getZipCode();
+// Prints 12345</code></pre>
 <h1 id="custom-mapping">Custom Mapping</h1>
 <p>To customize how StrictJson turns JSON into your models, create a class that implements <code>Burba\StrictJson\Adapter</code> and
 register it for a class or parameter when creating StrictJson. See below for examples of the different types of
