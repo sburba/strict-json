@@ -24,6 +24,7 @@ use Burba\StrictJson\JsonFormatException;
 use Burba\StrictJson\JsonPath;
 use Burba\StrictJson\StrictJson;
 use Burba\StrictJson\Type;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class StrictJsonTest extends TestCase
@@ -515,5 +516,28 @@ class StrictJsonTest extends TestCase
         $this->expectException(JsonFormatException::class);
         $this->expectExceptionMessage('Expected array, found object');
         $mapper->mapToArrayOf('{"one": 1, "two": 2}', Type::int());
+    }
+
+    /**
+     * @throws JsonFormatException
+     */
+    public function testParameterAlias(): void
+    {
+        $mapper = StrictJson::builder()
+            ->addParameterAlias(HasIntProp::class, 'int_prop', 'int_prop_json_name')
+            ->build();
+
+        $result = $mapper->map('{"int_prop_json_name": 1}', HasIntProp::class);
+
+        $this->assertEquals(new HasIntProp(1), $result);
+    }
+
+    /**
+     * Verify that if you provide an invalid classname for a parameter alias, the builder throws
+     */
+    public function testParameterAliasInvalidClass(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        StrictJson::builder()->addParameterAlias('invalid_class', 'does not matter', 'does not matter');
     }
 }

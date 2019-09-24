@@ -26,7 +26,7 @@
     "Throw_": {
       "ignore": [
         "Burba\\StrictJson\\Internal\\ConstructorParameterFetcher::findParameters::55",
-        "Burba\\StrictJson\\StrictJson::mapDecoded::113"
+        "Burba\\StrictJson\\StrictJson::mapDecoded::118"
       ]
     }
   }

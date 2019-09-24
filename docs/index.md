@@ -134,6 +134,28 @@ echo $message;
 // Prints 'Param is null'
 ```
 
+# Fields with invalid PHP parameter names
+If your JSON contains fields that aren't valid PHP parameter names, you can register a parameter alias to map
+it into a valid php parameter name
+
+Here's a minimal example, using the Address class defined above, but with the `zip_code` param represented as
+`$zip_code$` in the JSON:
+
+```php
+<?php declare(strict_types=1);
+use Burba\StrictJson\StrictJson;
+use Burba\StrictJson\Fixtures\Docs\Address;
+
+$json = '{"address": "1234 Easy St", "$zip_code$" => "12345"}';
+$mapper = StrictJson::builder()
+    ->addParameterAlias(Address::class, 'zip_code', '$zip_code$')
+    ->build();
+
+$address = $mapper->map($json, Address::class);
+echo $address->getZipCode();
+// Prints 12345
+```
+
 # Custom Mapping
 
 To customize how StrictJson turns JSON into your models, create a class that implements `Burba\StrictJson\Adapter` and

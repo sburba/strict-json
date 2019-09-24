@@ -232,4 +232,18 @@ class DocsTest extends TestCase
         $this->expectExceptionMessage('Value is of type string, expected type int at path $.a.b[1]');
         $mapper->map($json, ErrorPathExampleRoot::class);
     }
+
+    /**
+     * @throws JsonFormatException
+     */
+    public function testParameterAlias(): void
+    {
+        $json = '{"street": "1234 Easy St", "$zip_code$": "12345"}';
+        $mapper = StrictJson::builder()
+            ->addParameterAlias(Address::class, 'zip_code', '$zip_code$')
+            ->build();
+
+        $result = $mapper->map($json, Address::class);
+        $this->assertEquals(new Address('1234 Easy St', '12345'), $result);
+    }
 }

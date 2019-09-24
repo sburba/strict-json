@@ -10,11 +10,12 @@ use InvalidArgumentException;
 
 class StrictJson
 {
-    /** @var array */
+    /** @var Adapter[] */
     private $type_adapters;
+    /** @var array */
+    private $parameter_aliases;
     /** @var ConstructorParameterFetcher */
     private $parameter_finder;
-
 
     /**
      * Create an instance of StrictJson configured with type and parameter adapters.
@@ -27,13 +28,17 @@ class StrictJson
      * mapped
      * @param ConstructorParameterFetcher|null $parameter_finder Don't use this, use StrictJson::builder. This parameter
      * is not subject to semantic versioning compatibility guarantees
+     * @param array $parameter_aliases Don't use this, use StrictJson::builder. This parameter
+     * is not subject to semantic versioning compatibility guarantees
+     * @internal parameter_aliases
      *
      * @see StrictJson::builder()
      */
-    public function __construct(array $type_adapters = [], ?ConstructorParameterFetcher $parameter_finder = null)
+    public function __construct(array $type_adapters = [], ?ConstructorParameterFetcher $parameter_finder = null, array $parameter_aliases = [])
     {
         $this->type_adapters = $type_adapters;
         $this->parameter_finder = $parameter_finder ?? new ConstructorParameterFetcher();
+        $this->parameter_aliases = $parameter_aliases;
     }
 
     /**
@@ -141,8 +146,6 @@ class StrictJson
      */
     private function mapWithAdapter($value, Adapter $adapter, JsonPath $path)
     {
-        $path = $path ?? JsonPath::root();
-
         $supports_value = false;
         foreach ($adapter->fromTypes() as $supported_type) {
             $supports_value = $supports_value || $supported_type->allowsValue($value);
@@ -227,9 +230,10 @@ class StrictJson
          * @var TypedParameter $param
          */
         foreach ($parameters as $param_name => $param) {
-            if (array_key_exists($param_name, $decoded_json)) {
-                $value = $decoded_json[$param_name];
-                $param_path = $path->withProperty($param_name);
+            $json_field = $this->parameter_aliases[$target_type->getTypeName()][$param_name] ?? $param_name;
+            if (array_key_exists($json_field, $decoded_json)) {
+                $value = $decoded_json[$json_field];
+                $param_path = $path->withProperty($json_field);
                 if ($param->getAdapter() !== null) {
                     $value = $this->mapWithAdapter($value, $param->getAdapter(), $param_path);
                 } else {

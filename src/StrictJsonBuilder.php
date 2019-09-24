@@ -4,6 +4,7 @@ namespace Burba\StrictJson;
 
 use Burba\StrictJson\Internal\ArrayAdapter;
 use Burba\StrictJson\Internal\ConstructorParameterFetcher;
+use InvalidArgumentException;
 
 class StrictJsonBuilder
 {
@@ -11,6 +12,8 @@ class StrictJsonBuilder
     private $parameter_adapters = [];
     /** @var array */
     private $type_adapters = [];
+    /** @var array */
+    private $parameter_aliases = [];
 
     public function addParameterAdapter(string $class_name, string $parameter_name, Adapter $adapter): self
     {
@@ -42,11 +45,21 @@ class StrictJsonBuilder
         return $this;
     }
 
+    public function addParameterAlias(string $classname, string $parameter, string $json_name): self
+    {
+        if (!class_exists($classname)) {
+            throw new InvalidArgumentException("Type \"$classname\" is not a valid class");
+        }
+        $this->parameter_aliases[$classname][$parameter] = $json_name;
+        return $this;
+    }
+
     public function build(): StrictJson
     {
         return new StrictJson(
             $this->type_adapters,
-            new ConstructorParameterFetcher($this->parameter_adapters)
+            new ConstructorParameterFetcher($this->parameter_adapters),
+            $this->parameter_aliases
         );
     }
 }
