@@ -214,7 +214,7 @@ class StrictJson
      * @return object
      * @throws JsonFormatException
      */
-    private function mapClass($decoded_json, Type $target_type, JsonPath $path): object
+    private function mapClass($decoded_json, Type $target_type, JsonPath $path)
     {
         $type_name = $target_type->getTypeName();
         $parameters = $this->parameter_finder->getParameters($type_name, $path);
