@@ -76,7 +76,7 @@ class ConstructorParameterFetcher
                 // information for a more helpful error message
                 throw new InvalidConfigurationException(
                     "$classname::__construct has parameter name $param_name of type array with no parameter adapter\n"
-                    . "(Use StrictJson::builder()->addArrayParameterAdapter(...) to register an array adapter for this class)",
+                    . "(Use StrictJson::builder()->addParameterArrayAdapter(...) to register an array adapter for this class)",
                     $path
                 );
             }
